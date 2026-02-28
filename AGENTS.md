@@ -1,30 +1,36 @@
 # Repository Guidelines
 
 ## プロジェクト構成
-このリポジトリは、Manifest V3 ベースの Chrome 拡張です。構成はフラットで、主要ファイルは次のとおりです。
+このリポジトリは、Manifest V3 ベースの Chrome 拡張です。ソースは `src/` に集約し、ビルド成果物は `out/` に出力します。
 
-- `manifest.json`: 拡張機能の設定、対象 URL、読み込むスクリプトと CSS を定義します。
-- `content.js`: キー操作、ポップアップ UI、複数送信キュー、ChatGPT の DOM 操作を扱う本体です。
-- `styles.css`: オーバーレイとポップアップの見た目を定義します。
+- `src/*.ts`: content script の TypeScript 実装です。機能ごとに分割します。
+- `src/styles.css`: オーバーレイとポップアップの見た目を定義します。
+- `src/manifest.json`: 配布用 manifest のソースです。
+- `scripts/copy-assets.mjs`: manifest と CSS を `out/` にコピーします。
 - `README.md`: インストール手順、対象 URL、変更履歴を記載しています。
 
-現状、`src/`、ビルド成果物、テスト用ディレクトリはありません。新規ファイル追加は最小限にしてください。
+新しい実装コードは `src/` に追加し、`out/` は常に生成物として扱ってください。
 
 ## ビルド・テスト・開発コマンド
-このリポジトリにビルド工程はありません。開発は Chrome 上で直接確認します。
+TypeScript をビルドしてから Chrome 上で確認します。
 
+- `npm install`
+  開発依存をインストールします。
+- `npm run build`
+  `tsc` を実行し、成果物を `out/` に出力します。
 - `open chrome://extensions`
   Chrome の拡張機能管理画面を開きます。
-- `Developer mode` を有効化し、`Load unpacked` でこのフォルダを読み込みます。
-- 修正後は拡張機能カードの `Reload` を押して反映を確認します。
+- `Developer mode` を有効化し、`Load unpacked` で `out/` を読み込みます。
+- 修正後は再度 `npm run build` を実行し、拡張機能カードの `Reload` を押して反映を確認します。
 
 補助的に `git status` と `git diff` を使って差分確認を行ってください。
 
 ## コーディング規約と命名
-JSON、JavaScript、CSS は既存コードに合わせて 2 スペースインデントを使います。JavaScript は Chrome の content script でそのまま動く素の ES 構文を維持してください。
+JSON、TypeScript、CSS は既存コードに合わせて 2 スペースインデントを使います。TypeScript は bundler なしで `tsc` だけで出力できる構成を維持してください。
 
 - 関数・変数は `camelCase` (`findSendButton`)
 - 定数は `UPPER_SNAKE_CASE` (`OVERLAY_ID`)
+- 名前空間は `AwesomeInput` に統一する
 - CSS クラスと DOM ID は `cgk-` 接頭辞で衝突を避ける
 
 ChatGPT 側の DOM 変更に弱いため、セレクタは明示的かつ防御的に書いてください。

@@ -1,0 +1,12 @@
+{
+  "name": "awesome-input",
+  "version": "0.1.1",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf out",
+    "build": "npm run clean && tsc -p tsconfig.json && node scripts/copy-assets.mjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
