@@ -1,4 +1,10 @@
 namespace AwesomeInput {
+  function hasEditableContent(el: HTMLElement): boolean {
+    const contentEditable = el.getAttribute("contenteditable");
+    if (contentEditable === null) return false;
+    return contentEditable.toLowerCase() !== "false";
+  }
+
   export function isOurElement(el: Element | null): boolean {
     return Boolean(el?.closest?.(`#${OVERLAY_ID}`));
   }
@@ -12,21 +18,41 @@ namespace AwesomeInput {
       return type === "text" || type === "search";
     }
 
-    return (
-      el.isContentEditable ||
-      el.getAttribute("contenteditable") === "true" ||
-      el.getAttribute("role") === "textbox"
-    );
+    return el.isContentEditable || hasEditableContent(el);
+  }
+
+  export function findEditableHost(node: Node | null): EditableElement | null {
+    let current: Element | null = null;
+
+    if (node instanceof Element) {
+      current = node;
+    } else if (node instanceof Text) {
+      current = node.parentElement;
+    }
+
+    while (current) {
+      if (isEditable(current)) return current;
+      current = current.parentElement;
+    }
+
+    return null;
   }
 
   export function findComposer(): EditableElement | null {
     const active = document.activeElement;
-    if (active instanceof Element && isEditable(active)) return active;
+    if (active instanceof Element) {
+      const activeHost = findEditableHost(active);
+      if (activeHost) return activeHost;
+    }
+
+    const selectionHost = findEditableHost(window.getSelection()?.anchorNode || null);
+    if (selectionHost) return selectionHost;
 
     const selectors = [
-      'main form [contenteditable="true"][role="textbox"]',
-      'form [contenteditable="true"][role="textbox"]',
-      'main [contenteditable="true"]',
+      'main form [role="textbox"][contenteditable]:not([contenteditable="false"])',
+      'form [role="textbox"][contenteditable]:not([contenteditable="false"])',
+      '[role="textbox"][contenteditable]:not([contenteditable="false"])',
+      'main [contenteditable]:not([contenteditable="false"])',
       "form textarea",
       "textarea",
     ];
@@ -83,7 +109,7 @@ namespace AwesomeInput {
 
     let inserted = false;
     try {
-      inserted = document.execCommand("insertText", false, "\n");
+      inserted = document.execCommand("insertLineBreak");
     } catch {
       inserted = false;
     }
@@ -94,31 +120,15 @@ namespace AwesomeInput {
 
       const range = selection.getRangeAt(0);
       range.deleteContents();
-      const text = document.createTextNode("\n");
-      range.insertNode(text);
-      range.setStartAfter(text);
+      const br = document.createElement("br");
+      range.insertNode(br);
+      range.setStartAfter(br);
       range.collapse(true);
       selection.removeAllRanges();
       selection.addRange(range);
     }
 
-    el.dispatchEvent(
-      new InputEvent("beforeinput", {
-        bubbles: true,
-        cancelable: true,
-        data: "\n",
-        inputType: "insertLineBreak",
-      }),
-    );
-    el.dispatchEvent(
-      new InputEvent("input", {
-        bubbles: true,
-        cancelable: false,
-        data: "\n",
-        inputType: "insertLineBreak",
-      }),
-    );
-    el.dispatchEvent(new Event("change", { bubbles: true }));
+    dispatchInput(el);
   }
 
   export function setComposerText(text: string): boolean {
@@ -134,40 +144,21 @@ namespace AwesomeInput {
       return true;
     }
 
-    let inserted = false;
-    try {
-      const range = document.createRange();
-      range.selectNodeContents(el);
-      const selection = window.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(range);
-      inserted = document.execCommand("insertText", false, String(text));
-    } catch {
-      inserted = false;
-    }
+    el.innerHTML = "";
+    const fragment = document.createDocumentFragment();
+    const lines = String(text).split("\n");
 
-    if (!inserted) {
-      el.textContent = String(text);
-      dispatchInput(el);
-    } else {
-      el.dispatchEvent(
-        new InputEvent("beforeinput", {
-          bubbles: true,
-          cancelable: true,
-          data: String(text),
-          inputType: "insertText",
-        }),
-      );
-      el.dispatchEvent(
-        new InputEvent("input", {
-          bubbles: true,
-          cancelable: false,
-          data: String(text),
-          inputType: "insertText",
-        }),
-      );
-      el.dispatchEvent(new Event("change", { bubbles: true }));
-    }
+    lines.forEach((line, index) => {
+      if (line.length > 0) {
+        fragment.appendChild(document.createTextNode(line));
+      }
+      if (index < lines.length - 1) {
+        fragment.appendChild(document.createElement("br"));
+      }
+    });
+
+    el.appendChild(fragment);
+    dispatchInput(el);
 
     placeCaretAtEnd(el);
     return true;

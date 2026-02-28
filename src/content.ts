@@ -24,10 +24,12 @@ namespace AwesomeInput {
 
     if (event.target instanceof Element && isOurElement(event.target)) return;
 
-    const composer = findComposer();
-    const targetIsComposer = Boolean(
-      composer && targetNode && (targetNode === composer || composer.contains(targetNode)),
-    );
+    const composer = findEditableHost(targetNode) || findComposer();
+    const targetIsComposer =
+      composer &&
+      targetNode &&
+      (targetNode === composer || composer.contains(targetNode));
+
     if (!composer || !targetIsComposer) return;
     if (event.key !== "Enter" || event.isComposing || event.keyCode === 229) return;
 
