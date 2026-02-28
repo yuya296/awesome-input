@@ -1,6 +1,6 @@
-# ChatGPT Keyflow
+# Awesome Input
 
-ChatGPT のブラウザ版向け Chrome 拡張です。
+AI チャットの入力を快適にする Chrome 拡張です。現在は ChatGPT 系 URL を対象にしています。
 
 ## できること
 
