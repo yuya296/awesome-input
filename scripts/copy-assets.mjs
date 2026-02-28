@@ -8,4 +8,3 @@ const outDir = resolve(rootDir, "out");
 
 mkdirSync(outDir, { recursive: true });
 cpSync(resolve(rootDir, "src", "manifest.json"), resolve(outDir, "manifest.json"));
-cpSync(resolve(rootDir, "src", "styles.css"), resolve(outDir, "styles.css"));

@@ -5,8 +5,8 @@ namespace AwesomeInput {
     return contentEditable.toLowerCase() !== "false";
   }
 
-  export function isOurElement(el: Element | null): boolean {
-    return Boolean(el?.closest?.(`#${OVERLAY_ID}`));
+  export function isOurElement(_el: Element | null): boolean {
+    return false;
   }
 
   export function isEditable(el: Element | null): el is EditableElement {
@@ -207,5 +207,16 @@ namespace AwesomeInput {
 
     placeCaretAtEnd(el);
     return true;
+  }
+
+  export function getComposerText(): string {
+    const el = findComposer();
+    if (!el) return "";
+
+    if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
+      return el.value;
+    }
+
+    return el.innerText.replace(/\u00a0/g, " ");
   }
 }

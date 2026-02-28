@@ -3,26 +3,10 @@ interface Window {
 }
 
 namespace AwesomeInput {
-
   function handleGlobalKeydown(event: KeyboardEvent): void {
     if (event.defaultPrevented) return;
 
     const targetNode = event.target instanceof Node ? event.target : null;
-
-    if (
-      event.ctrlKey &&
-      !event.metaKey &&
-      !event.altKey &&
-      !event.shiftKey &&
-      !event.isComposing &&
-      event.key.toLowerCase() === "g"
-    ) {
-      event.preventDefault();
-      toggleOverlay();
-      return;
-    }
-
-    if (event.target instanceof Element && isOurElement(event.target)) return;
 
     const composer = findEditableHost(targetNode) || findComposer();
     const targetIsComposer =

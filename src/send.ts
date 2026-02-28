@@ -89,28 +89,4 @@ namespace AwesomeInput {
     return false;
   }
 
-  export async function waitUntilReady(
-    timeoutMs: number = 15 * 60 * 1000,
-  ): Promise<boolean> {
-    const started = Date.now();
-    let busySeen = false;
-
-    while (Date.now() - started < timeoutMs) {
-      if (state.queueCanceled) return false;
-
-      const stopButton = findStopButton();
-      const sendButton = findSendButton();
-      if (stopButton) busySeen = true;
-
-      if (busySeen) {
-        if (!stopButton && Boolean(sendButton)) return true;
-      } else if (Date.now() - started > 1500 && Boolean(sendButton)) {
-        return true;
-      }
-
-      await sleep(700);
-    }
-
-    return false;
-  }
 }

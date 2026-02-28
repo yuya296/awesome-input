@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Awesome Input",
   "version": "0.1.1",
-  "description": "Enterで改行、Cmd/Ctrl+Enterで送信。Ctrl+Gで複数入力ポップアップを開く入力支援拡張。",
+  "description": "Enterで改行、Cmd/Ctrl+Enterで送信する入力支援拡張。",
   "content_scripts": [
     {
       "matches": [
@@ -11,16 +11,11 @@
       ],
       "js": [
         "types.js",
-        "constants.js",
-        "state.js",
         "utils.js",
         "composer.js",
         "send.js",
-        "toast.js",
-        "overlay.js",
         "content.js"
       ],
-      "css": ["styles.css"],
       "run_at": "document_idle"
     }
   ]

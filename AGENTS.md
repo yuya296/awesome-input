@@ -4,9 +4,8 @@
 このリポジトリは、Manifest V3 ベースの Chrome 拡張です。ソースは `src/` に集約し、ビルド成果物は `out/` に出力します。
 
 - `src/*.ts`: content script の TypeScript 実装です。機能ごとに分割します。
-- `src/styles.css`: オーバーレイとポップアップの見た目を定義します。
 - `src/manifest.json`: 配布用 manifest のソースです。
-- `scripts/copy-assets.mjs`: manifest と CSS を `out/` にコピーします。
+- `scripts/copy-assets.mjs`: manifest を `out/` にコピーします。
 - `README.md`: インストール手順、対象 URL、変更履歴を記載しています。
 
 新しい実装コードは `src/` に追加し、`out/` は常に生成物として扱ってください。
@@ -26,12 +25,10 @@ TypeScript をビルドしてから Chrome 上で確認します。
 補助的に `git status` と `git diff` を使って差分確認を行ってください。
 
 ## コーディング規約と命名
-JSON、TypeScript、CSS は既存コードに合わせて 2 スペースインデントを使います。TypeScript は bundler なしで `tsc` だけで出力できる構成を維持してください。
+JSON と TypeScript は既存コードに合わせて 2 スペースインデントを使います。TypeScript は bundler なしで `tsc` だけで出力できる構成を維持してください。
 
 - 関数・変数は `camelCase` (`findSendButton`)
-- 定数は `UPPER_SNAKE_CASE` (`OVERLAY_ID`)
 - 名前空間は `AwesomeInput` に統一する
-- CSS クラスと DOM ID は `cgk-` 接頭辞で衝突を避ける
 
 ChatGPT 側の DOM 変更に弱いため、セレクタは明示的かつ防御的に書いてください。
 
@@ -41,7 +38,7 @@ ChatGPT 側の DOM 変更に弱いため、セレクタは明示的かつ防御�
 - `https://chatgpt.com/*`
 - `https://chat.openai.com/*`
 
-最低限、`Enter` で改行、`Cmd/Ctrl+Enter` で送信、`Ctrl+G` でポップアップ開閉、行単位送信、「すべて送信」を確認してください。送信ボタン検出まわりを触る場合は、ChatGPT の応答完了後の再送信可否も確認します。
+最低限、`Enter` で改行、`Cmd/Ctrl+Enter` で送信を確認してください。送信ボタン検出まわりを触る場合は、ChatGPT の応答完了後の再送信可否も確認します。
 
 ## コミット・PR ガイド
 履歴はまだ少ないため、コミットメッセージは短く、命令形で変更内容が分かる形にしてください。例: `送信ボタン検出を修正`、`ポップアップ余白を調整`
