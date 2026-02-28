@@ -33,12 +33,7 @@ namespace AwesomeInput {
     if (!composer || !targetIsComposer) return;
     if (event.key !== "Enter" || event.isComposing || event.keyCode === 229) return;
 
-    const isSendKey =
-      !event.shiftKey &&
-      !event.altKey &&
-      (event.metaKey || (!isMac() && event.ctrlKey) || (isMac() && event.ctrlKey));
-
-    if (isSendKey) {
+    if (isSendShortcut(event)) {
       event.preventDefault();
       sendCurrentDraft();
       return;
@@ -52,7 +47,8 @@ namespace AwesomeInput {
 
     if (plainEnter) {
       event.preventDefault();
-      insertNewline(composer);
+      event.stopPropagation();
+      dispatchNativeLineBreak(composer);
     }
   }
 

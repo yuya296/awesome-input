@@ -106,14 +106,7 @@ namespace AwesomeInput {
     textarea.rows = 3;
 
     textarea.addEventListener("keydown", (event) => {
-      const isSendKey =
-        event.key === "Enter" &&
-        !event.shiftKey &&
-        !event.altKey &&
-        !event.isComposing &&
-        (event.metaKey || event.ctrlKey);
-
-      if (!isSendKey) return;
+      if (event.key !== "Enter" || !isSendShortcut(event)) return;
       event.preventDefault();
       void sendSingleRow(textarea);
     });
@@ -156,7 +149,7 @@ namespace AwesomeInput {
         <div class="${STYLE_SCOPE}-header">
           <div>
             <div class="${STYLE_SCOPE}-title">複数入力</div>
-            <div class="${STYLE_SCOPE}-subtitle">Ctrl+G で開閉 / Cmd(Ctrl)+Enter で行単位送信</div>
+            <div class="${STYLE_SCOPE}-subtitle">Ctrl+G で開閉 / MacはCmd+Enter、Win/LinuxはCtrl+Enterで行単位送信</div>
           </div>
         </div>
         <div class="${STYLE_SCOPE}-list"></div>

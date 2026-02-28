@@ -65,16 +65,35 @@ namespace AwesomeInput {
     return null;
   }
 
-  function dispatchInput(el: EditableElement): void {
+  function dispatchInput(
+    el: EditableElement,
+    inputType: string = "insertText",
+    data: string | null = null,
+  ): void {
     el.dispatchEvent(
       new InputEvent("input", {
         bubbles: true,
-        cancelable: true,
-        data: null,
-        inputType: "insertText",
+        cancelable: false,
+        data,
+        inputType,
       }),
     );
     el.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function dispatchBeforeInput(
+    el: EditableElement,
+    inputType: string,
+    data: string | null = null,
+  ): boolean {
+    return el.dispatchEvent(
+      new InputEvent("beforeinput", {
+        bubbles: true,
+        cancelable: true,
+        data,
+        inputType,
+      }),
+    );
   }
 
   function placeCaretAtEnd(el: EditableElement): void {
@@ -95,40 +114,66 @@ namespace AwesomeInput {
     selection?.addRange(range);
   }
 
-  export function insertNewline(el: EditableElement): void {
+  function dispatchSyntheticEnter(
+    el: EditableElement,
+    eventType: "keydown" | "keypress" | "keyup",
+  ): boolean {
+    return el.dispatchEvent(
+      new KeyboardEvent(eventType, {
+        key: "Enter",
+        code: "Enter",
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        shiftKey: true,
+      }),
+    );
+  }
+
+  export function dispatchNativeLineBreak(el: EditableElement): boolean {
     if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
       const start = el.selectionStart ?? el.value.length;
       const end = el.selectionEnd ?? el.value.length;
       el.value = `${el.value.slice(0, start)}\n${el.value.slice(end)}`;
       el.setSelectionRange(start + 1, start + 1);
-      dispatchInput(el);
-      return;
+      dispatchInput(el, "insertLineBreak", "\n");
+      return true;
     }
 
     el.focus();
 
-    let inserted = false;
-    try {
-      inserted = document.execCommand("insertLineBreak");
-    } catch {
-      inserted = false;
+    const keydownAllowed = dispatchSyntheticEnter(el, "keydown");
+    const keypressAllowed = dispatchSyntheticEnter(el, "keypress");
+    dispatchSyntheticEnter(el, "keyup");
+
+    return keydownAllowed || keypressAllowed;
+  }
+
+  export function insertNewline(el: EditableElement): void {
+    if (dispatchNativeLineBreak(el)) {
+      return;
     }
 
-    if (!inserted) {
-      const selection = window.getSelection();
-      if (!selection || selection.rangeCount === 0) return;
-
-      const range = selection.getRangeAt(0);
-      range.deleteContents();
-      const br = document.createElement("br");
-      range.insertNode(br);
-      range.setStartAfter(br);
-      range.collapse(true);
-      selection.removeAllRanges();
-      selection.addRange(range);
+    if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
+      return;
     }
 
-    dispatchInput(el);
+    const beforeAllowed = dispatchBeforeInput(el, "insertLineBreak", "\n");
+    if (!beforeAllowed) return;
+
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    const br = document.createElement("br");
+    range.insertNode(br);
+    range.setStartAfter(br);
+    range.collapse(true);
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    dispatchInput(el, "insertLineBreak", "\n");
   }
 
   export function setComposerText(text: string): boolean {
