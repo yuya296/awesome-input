@@ -3,6 +3,7 @@ node_modules/
 .playwright-browsers/
 .playwright-cli/
 out/
+dist/
 playwright-report/
 test-results/
 .DS_Store

@@ -1,9 +1,15 @@
 {
   "manifest_version": 3,
   "name": "Awesome Input",
-  "version": "0.1",
-  "version_name": "v0.1",
+  "version": "0.1.0",
+  "version_name": "v0.1.0",
   "description": "Input helper extension that inserts newlines with Enter and sends with Cmd/Ctrl+Enter.",
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
   "content_scripts": [
     {
       "matches": [
