@@ -19,6 +19,12 @@ Awesome Input is a Chrome extension that improves text input for AI chat service
 6. Click **Load unpacked**.
 7. Select the `out/` directory.
 
+## Chrome Web Store Readiness
+
+- The extension package now includes store-ready icons in `src/assets/`.
+- For store submissions, upload a zip whose root is the built `out/` directory contents.
+- Prepare screenshots for ChatGPT and Gemini that show both newline insertion and send behavior.
+
 ## Development
 
 - Source files live under `src/`.
@@ -42,6 +48,12 @@ Awesome Input is a Chrome extension that improves text input for AI chat service
 - Live E2E fails when the expected composer or send button is missing, because that likely means the target product flow or DOM changed.
 - Live E2E patches the send button by default so it verifies the shortcut trigger without actually sending a prompt. Set `LIVE_E2E_ALLOW_REAL_SEND=1` only for local debugging.
 - `claude.ai` is currently unsupported and is excluded from the extension manifest `matches`.
+
+## Privacy
+
+- Awesome Input does not collect, store, or transmit user prompts or chat content.
+- The extension does not use analytics, ads, or third-party tracking.
+- See [docs/privacy.md](/Users/yuya/dev/chatgpt-keyflow-extension/docs/privacy.md) for the publishable privacy statement.
 
 ## v0.1
 

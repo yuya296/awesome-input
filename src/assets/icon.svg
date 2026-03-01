@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Awesome Input icon">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f766e" />
+      <stop offset="100%" stop-color="#115e59" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7" />
+      <stop offset="100%" stop-color="#fde68a" />
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#bg)" />
+  <path d="M40 34h48a14 14 0 0 1 14 14v24a14 14 0 0 1-14 14H64l-20 16v-16h-4a14 14 0 0 1-14-14V48a14 14 0 0 1 14-14Z" fill="#ffffff" />
+  <path d="M48 52h34M48 64h22" fill="none" stroke="#115e59" stroke-linecap="round" stroke-width="8" />
+  <path d="M74 88V60m0 0-10 10m10-10 10 10" fill="none" stroke="url(#accent)" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" />
+</svg>
