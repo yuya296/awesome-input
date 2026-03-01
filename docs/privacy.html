@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Awesome Input Privacy Policy</title>
+    <meta
+      name="description"
+      content="Privacy Policy for Awesome Input, a Chrome extension for supported AI chat sites."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f9f8;
+        --panel: #ffffff;
+        --text: #142f28;
+        --muted: #4e6660;
+        --accent: #0f766e;
+        --line: #d9e3df;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, #d8f0e6 0, transparent 28%),
+          linear-gradient(180deg, #fbfcfc 0%, var(--bg) 100%);
+      }
+
+      main {
+        width: min(840px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 40px 0 64px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 24px 60px rgba(15, 118, 110, 0.08);
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: #e0f3ef;
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      h1 {
+        margin-top: 18px;
+        font-size: clamp(32px, 6vw, 54px);
+      }
+
+      h2 {
+        margin-top: 30px;
+        font-size: 24px;
+      }
+
+      p,
+      li {
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      p {
+        margin: 14px 0 0;
+      }
+
+      ul {
+        margin: 14px 0 0;
+        padding-left: 20px;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .back-link {
+        display: inline-block;
+        margin-top: 24px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .meta {
+        margin-top: 14px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="card">
+        <span class="eyebrow">Privacy Policy</span>
+        <h1>Awesome Input</h1>
+        <p>
+          Awesome Input is a client-side Chrome extension for supported AI chat
+          services. It adjusts keyboard behavior inside supported web composers so
+          Enter inserts a new line and Cmd+Enter or Ctrl+Enter sends a message.
+        </p>
+        <p class="meta">Last updated: March 1, 2026</p>
+
+        <h2>Data Handling</h2>
+        <ul>
+          <li>We do not collect personal information, prompts, or chat content.</li>
+          <li>We do not collect usage analytics.</li>
+          <li>We do not transmit data to external servers.</li>
+          <li>We do not store user input in extension-managed storage.</li>
+          <li>We do not use advertising, profiling, or third-party tracking.</li>
+        </ul>
+
+        <h2>Permissions Scope</h2>
+        <ul>
+          <li>
+            The extension runs only on the URLs declared in the extension manifest.
+          </li>
+          <li>
+            It reads page DOM state only to detect the composer and send controls
+            needed for its keyboard shortcuts.
+          </li>
+        </ul>
+
+        <h2>Support</h2>
+        <p>
+          For support or privacy questions, use the repository issue tracker or the
+          support contact listed in the Chrome Web Store entry.
+        </p>
+
+        <a class="back-link" href="./">Back to Overview</a>
+      </section>
+    </main>
+  </body>
+</html>
