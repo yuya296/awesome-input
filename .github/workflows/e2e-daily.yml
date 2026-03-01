@@ -49,9 +49,13 @@ jobs:
           if-no-files-found: ignore
 
   e2e-live:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && vars.LIVE_E2E_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      LIVE_E2E_CHATGPT_URL: ${{ vars.LIVE_E2E_CHATGPT_URL }}
+      LIVE_E2E_GEMINI_URL: ${{ vars.LIVE_E2E_GEMINI_URL }}
+      LIVE_E2E_ALLOW_REAL_SEND: "0"
 
     steps:
       - name: Checkout

@@ -23,6 +23,7 @@ const GEMINI_SEND_BUTTON_SELECTORS = [
   'button[mattooltip*="Send"]',
   "button.send-button",
 ];
+const LIVE_TEST_TIMEOUT_MS = Math.max(60_000, getNavTimeoutMs() * 3 + 10_000);
 
 test.skip(
   process.platform === "linux" && !process.env.DISPLAY,
@@ -30,6 +31,8 @@ test.skip(
 );
 
 test.describe("Gemini live E2E", () => {
+  test.setTimeout(LIVE_TEST_TIMEOUT_MS);
+
   test("Enter inserts a newline and send shortcut triggers send", async () => {
     const { context, cleanup } = await launchExtensionContext();
     const timeoutMs = getNavTimeoutMs();
