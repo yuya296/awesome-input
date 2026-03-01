@@ -1,6 +1,6 @@
 # Awesome Input
 
-[English README](./README.md)
+[English](./README.md) | 日本語
 
 Awesome Input は、AI チャットサービスの入力体験を改善する Chrome 拡張です。現在は ChatGPT と Gemini を対象にしています。
 
@@ -39,5 +39,4 @@ Awesome Input は、AI チャットサービスの入力体験を改善する Ch
 
 ## v0.1
 
-- `<br>` 依存の不具合を避けるよう改行処理を調整
-- 複数行テキストの投入挙動を改善
+- ChatGPT と Gemini に対応

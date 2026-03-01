@@ -1,6 +1,6 @@
 # Awesome Input
 
-[日本語版 README](./README.ja.md)
+English | [日本語](./README.ja.md)
 
 Awesome Input is a Chrome extension that improves text input for AI chat services. It currently targets ChatGPT and Gemini.
 
@@ -39,5 +39,4 @@ Awesome Input is a Chrome extension that improves text input for AI chat service
 
 ## v0.1
 
-- Adjusted newline handling to avoid `<br>`-driven input issues
-- Improved multi-line text insertion behavior
+- Added support for ChatGPT and Gemini
