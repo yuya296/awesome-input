@@ -14,6 +14,11 @@
       "js": [
         "types.js",
         "utils.js",
+        "dom.js",
+        "adapters/base.js",
+        "adapters/chatgpt.js",
+        "adapters/gemini.js",
+        "adapters/index.js",
         "composer.js",
         "send.js",
         "content.js"

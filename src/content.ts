@@ -6,7 +6,8 @@ namespace AwesomeInput {
   function handleGlobalKeydown(event: KeyboardEvent): void {
     const targetNode = event.target instanceof Node ? event.target : null;
 
-    const composer = findEditableHost(targetNode) || findComposer();
+    const adapter = resolveSiteAdapter();
+    const composer = findEditableHost(targetNode) || adapter.findComposer();
     const targetIsComposer =
       composer &&
       targetNode &&
@@ -14,6 +15,9 @@ namespace AwesomeInput {
 
     if (!composer || !targetIsComposer) return;
     if (event.key !== "Enter" || event.isComposing || event.keyCode === 229) return;
+
+    const fallbackAllowed = isRegisteredSite() || canSendCurrentDraft(composer);
+    if (!fallbackAllowed) return;
 
     if (isSendShortcut(event)) {
       if (event.defaultPrevented) return;
