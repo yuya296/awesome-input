@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Awesome Input",
-  "version": "0.1.1",
+  "version": "0.1",
+  "version_name": "v0.1",
   "description": "Enterで改行、Cmd/Ctrl+Enterで送信する入力支援拡張。",
   "content_scripts": [
     {

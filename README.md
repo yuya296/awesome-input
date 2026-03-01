@@ -1,42 +1,43 @@
 # Awesome Input
 
-AI チャットの入力を快適にする Chrome 拡張です。現在は ChatGPT / Claude / Gemini を対象にしています。
+[日本語版 README](./README.ja.md)
 
-## できること
+Awesome Input is a Chrome extension that improves text input for AI chat services. It currently targets ChatGPT, Claude, and Gemini.
 
-- `Enter` で改行
-- `Cmd+Enter` / `Ctrl+Enter` で送信
+## Features
 
-## インストール
+- `Enter` inserts a newline
+- `Cmd+Enter` / `Ctrl+Enter` sends the current draft
 
-1. このフォルダをローカルに保存
-2. `npm install`
-3. `npm run build`
-4. Chrome で `chrome://extensions` を開く
-5. 右上の **デベロッパーモード** を ON
-6. **パッケージ化されていない拡張機能を読み込む** を押す
-7. `out/` ディレクトリを選ぶ
+## Installation
 
-## 開発
+1. Clone or download this repository.
+2. Run `npm install`.
+3. Run `npm run build`.
+4. Open `chrome://extensions` in Chrome.
+5. Enable **Developer mode**.
+6. Click **Load unpacked**.
+7. Select the `out/` directory.
 
-- ソースコードは `src/` 配下で管理します。
-- TypeScript のビルド成果物は `out/` に出力されます。
-- 修正後は `npm run build` を実行し、Chrome 側で拡張機能を再読み込みしてください。
-- E2E テストは `npm run test:e2e` で実行できます。
+## Development
 
-## 対象URL
+- Source files live under `src/`.
+- Build output is generated into `out/`.
+- Rebuild with `npm run build` after changes, then reload the extension in Chrome.
+- Run E2E checks with `npm run test:e2e`.
+
+## Supported URLs
 
 - `https://chatgpt.com/*`
 - `https://chat.openai.com/*`
 - `https://claude.ai/*`
 - `https://gemini.google.com/*`
 
-## 注意
+## Notes
 
-- 対象サービス側の DOM / ボタン構造が変わると送信ボタン検出が壊れる可能性があります。
+- The extension depends on site-specific DOM structure. Input and send-button detection may break if the target services change their UI.
 
+## v0.1
 
-## v0.1.1
-
-- Enter の改行処理を `<br>` 挿入から `\n` 挿入寄りに修正
-- 複数行テキスト投入も `<br>` ベースから改行文字ベースに修正
+- Adjusted newline handling to avoid `<br>`-driven input issues
+- Improved multi-line text insertion behavior
