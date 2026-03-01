@@ -33,7 +33,7 @@ Awesome Input is a Chrome extension that improves text input for AI chat service
 - Run fixture E2E checks with `npm run test:e2e`.
 - Run live site smoke checks with `npm run test:e2e:live`.
 - Run both suites with `npm run test:e2e:all`.
-- See [docs/testing.md](/Users/yuya/dev/chatgpt-keyflow-extension/docs/testing.md) for the testing purpose and strategy.
+- See [docs/testing.md](./docs/testing.md) for the testing purpose and strategy.
 
 ## Supported URLs
 

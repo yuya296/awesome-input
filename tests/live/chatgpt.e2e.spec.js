@@ -24,6 +24,7 @@ const CHATGPT_SEND_BUTTON_SELECTORS = [
   'button[data-testid*="send"]',
   'button[aria-label*="Send"]',
 ];
+const LIVE_TEST_TIMEOUT_MS = Math.max(60_000, getNavTimeoutMs() * 3 + 10_000);
 
 test.skip(
   process.platform === "linux" && !process.env.DISPLAY,
@@ -31,6 +32,8 @@ test.skip(
 );
 
 test.describe("ChatGPT live E2E", () => {
+  test.setTimeout(LIVE_TEST_TIMEOUT_MS);
+
   test("Enter inserts a newline and send shortcut triggers send", async () => {
     const { context, cleanup } = await launchExtensionContext();
     const timeoutMs = getNavTimeoutMs();
