@@ -2,7 +2,7 @@
 
 [English README](./README.md)
 
-Awesome Input は、AI チャットサービスの入力体験を改善する Chrome 拡張です。現在は ChatGPT、Claude、Gemini を対象にしています。
+Awesome Input は、AI チャットサービスの入力体験を改善する Chrome 拡張です。現在は ChatGPT と Gemini を対象にしています。
 
 ## できること
 
@@ -30,12 +30,12 @@ Awesome Input は、AI チャットサービスの入力体験を改善する Ch
 
 - `https://chatgpt.com/*`
 - `https://chat.openai.com/*`
-- `https://claude.ai/*`
 - `https://gemini.google.com/*`
 
 ## 注意
 
 - 対象サービスの DOM 構造に依存しているため、UI 変更で入力欄や送信ボタンの検出が壊れる可能性があります。
+- `claude.ai` は現在未対応で、拡張の `matches` に含めていません。
 
 ## v0.1
 

@@ -3,13 +3,12 @@
   "name": "Awesome Input",
   "version": "0.1",
   "version_name": "v0.1",
-  "description": "Enterで改行、Cmd/Ctrl+Enterで送信する入力支援拡張。",
+  "description": "Input helper extension that inserts newlines with Enter and sends with Cmd/Ctrl+Enter.",
   "content_scripts": [
     {
       "matches": [
         "https://chatgpt.com/*",
         "https://chat.openai.com/*",
-        "https://claude.ai/*",
         "https://gemini.google.com/*"
       ],
       "js": [

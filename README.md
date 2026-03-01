@@ -2,7 +2,7 @@
 
 [日本語版 README](./README.ja.md)
 
-Awesome Input is a Chrome extension that improves text input for AI chat services. It currently targets ChatGPT, Claude, and Gemini.
+Awesome Input is a Chrome extension that improves text input for AI chat services. It currently targets ChatGPT and Gemini.
 
 ## Features
 
@@ -30,12 +30,12 @@ Awesome Input is a Chrome extension that improves text input for AI chat service
 
 - `https://chatgpt.com/*`
 - `https://chat.openai.com/*`
-- `https://claude.ai/*`
 - `https://gemini.google.com/*`
 
 ## Notes
 
 - The extension depends on site-specific DOM structure. Input and send-button detection may break if the target services change their UI.
+- `claude.ai` is currently unsupported and is excluded from the extension manifest `matches`.
 
 ## v0.1
 

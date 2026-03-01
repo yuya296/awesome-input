@@ -22,7 +22,7 @@ Use 2-space indentation in JSON and TypeScript. Keep the output compatible with 
 
 - Use `camelCase` for functions and variables
 - Keep shared browser logic under the `AwesomeInput` namespace
-- Write defensive selectors because ChatGPT, Claude, and Gemini DOM structures change often
+- Write defensive selectors because ChatGPT and Gemini DOM structures change often
 
 ## Testing Guidelines
 Run `npm run test:e2e` for automated regression checks. Also do manual verification on the supported services and confirm:
@@ -30,6 +30,7 @@ Run `npm run test:e2e` for automated regression checks. Also do manual verificat
 - `Enter` inserts a newline
 - `Cmd+Enter` / `Ctrl+Enter` sends
 - send button detection still works after response completion
+- `claude.ai` is currently unsupported and should be treated as out of scope
 
 ## Commit and PR Guidelines
 Use short, specific commit messages. Pull requests should include a change summary, tested URLs, manual verification steps, and screenshots or recordings for visible UI changes.
