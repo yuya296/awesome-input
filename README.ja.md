@@ -27,7 +27,7 @@ Awesome Input は、AI チャットサービスの入力体験を改善する Ch
 - fixture E2E は `npm run test:e2e` で実行できます。
 - 実サイト smoke E2E は `npm run test:e2e:live` で実行できます。
 - 両方まとめて実行する場合は `npm run test:e2e:all` を使います。
-- テストの目的と戦略は [docs/testing.ja.md](/Users/yuya/dev/chatgpt-keyflow-extension/docs/testing.ja.md) を参照してください。
+- テストの目的と戦略は [docs/testing.md](/Users/yuya/dev/chatgpt-keyflow-extension/docs/testing.md) を参照してください。
 
 ## 対象 URL
 
