@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Site Adapter"
+  short_description: "Project rules for adding a supported site adapter"
+  default_prompt: "Use $add-site-adapter to add support for a new AI chat site in Awesome Input."
