@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf out",
-    "build": "npm run clean && tsc -p tsconfig.json && node scripts/copy-assets.mjs"
+    "build": "npm run clean && tsc -p tsconfig.json && node scripts/copy-assets.mjs",
+    "test:e2e": "npm run build && playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "typescript": "^5.9.3"
   }
 }

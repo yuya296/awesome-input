@@ -35,9 +35,14 @@ namespace AwesomeInput {
     const selectors = [
       'button[data-testid="send-button"]',
       'button[data-testid*="send"]',
+      'button[aria-label="Send Message"]',
+      'button[aria-label="Send message"]',
+      'button[aria-label="Send"]',
       'button[aria-label*="Send"]',
       'button[aria-label*="send"]',
       'button[aria-label*="送信"]',
+      'button[mattooltip*="Send"]',
+      'button.send-button',
       'form button[type="submit"]',
     ];
 

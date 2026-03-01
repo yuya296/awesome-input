@@ -1,4 +1,8 @@
 node_modules/
 .npm-cache/
+.playwright-browsers/
+.playwright-cli/
 out/
+playwright-report/
+test-results/
 .DS_Store

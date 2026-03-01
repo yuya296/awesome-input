@@ -4,8 +4,6 @@ interface Window {
 
 namespace AwesomeInput {
   function handleGlobalKeydown(event: KeyboardEvent): void {
-    if (event.defaultPrevented) return;
-
     const targetNode = event.target instanceof Node ? event.target : null;
 
     const composer = findEditableHost(targetNode) || findComposer();
@@ -18,7 +16,10 @@ namespace AwesomeInput {
     if (event.key !== "Enter" || event.isComposing || event.keyCode === 229) return;
 
     if (isSendShortcut(event)) {
+      if (event.defaultPrevented) return;
       event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
       sendCurrentDraft();
       return;
     }
@@ -32,7 +33,8 @@ namespace AwesomeInput {
     if (plainEnter) {
       event.preventDefault();
       event.stopPropagation();
-      dispatchNativeLineBreak(composer);
+      event.stopImmediatePropagation();
+      insertNewline(composer);
     }
   }
 

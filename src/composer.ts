@@ -21,6 +21,23 @@ namespace AwesomeInput {
     return el.isContentEditable || hasEditableContent(el);
   }
 
+  function isEditingHost(el: Element | null): el is EditableElement {
+    if (!(el instanceof HTMLElement)) return false;
+    if (isOurElement(el)) return false;
+
+    if (el instanceof HTMLTextAreaElement) return true;
+    if (el instanceof HTMLInputElement) {
+      const type = (el.type || "").toLowerCase();
+      return type === "text" || type === "search";
+    }
+
+    if (hasEditableContent(el)) return true;
+    if (el.getAttribute("role") === "textbox" && el.isContentEditable) return true;
+
+    const parentIsEditable = el.parentElement?.isContentEditable ?? false;
+    return el.isContentEditable && !parentIsEditable;
+  }
+
   export function findEditableHost(node: Node | null): EditableElement | null {
     let current: Element | null = null;
 
@@ -31,7 +48,7 @@ namespace AwesomeInput {
     }
 
     while (current) {
-      if (isEditable(current)) return current;
+      if (isEditingHost(current)) return current;
       current = current.parentElement;
     }
 
@@ -49,6 +66,11 @@ namespace AwesomeInput {
     if (selectionHost) return selectionHost;
 
     const selectors = [
+      'fieldset .ProseMirror[contenteditable]:not([contenteditable="false"])',
+      '.ProseMirror[contenteditable]:not([contenteditable="false"])',
+      '[data-placeholder][contenteditable]:not([contenteditable="false"])',
+      'rich-textarea [contenteditable]:not([contenteditable="false"])',
+      '.ql-editor[contenteditable]:not([contenteditable="false"])',
       'main form [role="textbox"][contenteditable]:not([contenteditable="false"])',
       'form [role="textbox"][contenteditable]:not([contenteditable="false"])',
       '[role="textbox"][contenteditable]:not([contenteditable="false"])',
@@ -96,6 +118,27 @@ namespace AwesomeInput {
     );
   }
 
+  function dispatchPlainInput(el: EditableElement): void {
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  function snapshotEditableValue(el: EditableElement): string {
+    if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
+      return el.value;
+    }
+
+    return el.innerHTML;
+  }
+
+  function readEditableText(el: EditableElement): string {
+    if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
+      return el.value;
+    }
+
+    return el.innerText.replace(/\u00a0/g, " ");
+  }
+
   function placeCaretAtEnd(el: EditableElement): void {
     if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
       const end = el.value.length;
@@ -132,37 +175,55 @@ namespace AwesomeInput {
 
   export function dispatchNativeLineBreak(el: EditableElement): boolean {
     if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
+      dispatchBeforeInput(el, "insertText", "\n");
+
       const start = el.selectionStart ?? el.value.length;
       const end = el.selectionEnd ?? el.value.length;
-      el.value = `${el.value.slice(0, start)}\n${el.value.slice(end)}`;
-      el.setSelectionRange(start + 1, start + 1);
-      dispatchInput(el, "insertLineBreak", "\n");
+      if (typeof el.setRangeText === "function") {
+        el.setRangeText("\n", start, end, "end");
+      } else {
+        el.value = `${el.value.slice(0, start)}\n${el.value.slice(end)}`;
+        el.setSelectionRange(start + 1, start + 1);
+      }
+
+      dispatchInput(el, "insertText", "\n");
+      dispatchPlainInput(el);
       return true;
     }
 
     el.focus();
+    const before = snapshotEditableValue(el);
 
-    const keydownAllowed = dispatchSyntheticEnter(el, "keydown");
-    const keypressAllowed = dispatchSyntheticEnter(el, "keypress");
-    dispatchSyntheticEnter(el, "keyup");
+    if (isGeminiHost()) {
+      let inserted = false;
+      try {
+        inserted = document.execCommand("insertParagraph");
+      } catch {
+        inserted = false;
+      }
 
-    return keydownAllowed || keypressAllowed;
-  }
-
-  export function insertNewline(el: EditableElement): void {
-    if (dispatchNativeLineBreak(el)) {
-      return;
+      if (inserted && snapshotEditableValue(el) !== before) {
+        return true;
+      }
     }
 
+    dispatchSyntheticEnter(el, "keydown");
+    dispatchSyntheticEnter(el, "keypress");
+    dispatchSyntheticEnter(el, "keyup");
+
+    return snapshotEditableValue(el) !== before;
+  }
+
+  function insertFallbackLineBreak(el: EditableElement): boolean {
     if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
-      return;
+      return dispatchNativeLineBreak(el);
     }
 
     const beforeAllowed = dispatchBeforeInput(el, "insertLineBreak", "\n");
-    if (!beforeAllowed) return;
+    if (!beforeAllowed) return false;
 
     const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
+    if (!selection || selection.rangeCount === 0) return false;
 
     const range = selection.getRangeAt(0);
     range.deleteContents();
@@ -174,6 +235,31 @@ namespace AwesomeInput {
     selection.addRange(range);
 
     dispatchInput(el, "insertLineBreak", "\n");
+    return true;
+  }
+
+  export function insertNewline(el: EditableElement): void {
+    if (isGeminiHost()) {
+      if (dispatchNativeLineBreak(el)) {
+        return;
+      }
+      insertFallbackLineBreak(el);
+      return;
+    }
+
+    if (prefersSyntheticLineBreak()) {
+      if (dispatchNativeLineBreak(el)) {
+        return;
+      }
+      insertFallbackLineBreak(el);
+      return;
+    }
+
+    if (insertFallbackLineBreak(el)) {
+      return;
+    }
+
+    dispatchNativeLineBreak(el);
   }
 
   export function setComposerText(text: string): boolean {
@@ -212,11 +298,6 @@ namespace AwesomeInput {
   export function getComposerText(): string {
     const el = findComposer();
     if (!el) return "";
-
-    if (el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement) {
-      return el.value;
-    }
-
-    return el.innerText.replace(/\u00a0/g, " ");
+    return readEditableText(el);
   }
 }

@@ -1,6 +1,6 @@
 # Awesome Input
 
-AI チャットの入力を快適にする Chrome 拡張です。現在は ChatGPT 系 URL を対象にしています。
+AI チャットの入力を快適にする Chrome 拡張です。現在は ChatGPT / Claude / Gemini を対象にしています。
 
 ## できること
 
@@ -22,15 +22,18 @@ AI チャットの入力を快適にする Chrome 拡張です。現在は ChatG
 - ソースコードは `src/` 配下で管理します。
 - TypeScript のビルド成果物は `out/` に出力されます。
 - 修正後は `npm run build` を実行し、Chrome 側で拡張機能を再読み込みしてください。
+- E2E テストは `npm run test:e2e` で実行できます。
 
 ## 対象URL
 
 - `https://chatgpt.com/*`
 - `https://chat.openai.com/*`
+- `https://claude.ai/*`
+- `https://gemini.google.com/*`
 
 ## 注意
 
-- ChatGPT 側の DOM / ボタン構造が変わると送信ボタン検出が壊れる可能性があります。
+- 対象サービス側の DOM / ボタン構造が変わると送信ボタン検出が壊れる可能性があります。
 
 
 ## v0.1.1

@@ -3,6 +3,14 @@ namespace AwesomeInput {
     return new Promise((resolve) => window.setTimeout(resolve, ms));
   }
 
+  export function currentHostname(): string {
+    return window.location.hostname.toLowerCase();
+  }
+
+  export function isGeminiHost(): boolean {
+    return currentHostname() === "gemini.google.com";
+  }
+
   export function isMac(): boolean {
     return /Mac|iPhone|iPad|iPod/i.test(navigator.platform || navigator.userAgent);
   }
@@ -15,5 +23,10 @@ namespace AwesomeInput {
     }
 
     return event.ctrlKey && !event.metaKey;
+  }
+
+  export function prefersSyntheticLineBreak(): boolean {
+    const hostname = currentHostname();
+    return hostname === "chatgpt.com" || hostname === "chat.openai.com";
   }
 }
