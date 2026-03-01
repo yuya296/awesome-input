@@ -14,7 +14,9 @@ This repository is a Manifest V3 Chrome extension. Keep source files in `src/` a
 
 - `npm install`: install development dependencies
 - `npm run build`: compile TypeScript and emit the unpacked extension into `out/`
-- `npm run test:e2e`: rebuild and run Playwright E2E tests
+- `npm run test:e2e`: rebuild and run fixture Playwright E2E tests
+- `npm run test:e2e:live`: rebuild and run live-site Playwright smoke tests
+- `npm run test:e2e:all`: run both fixture and live E2E suites
 - Load `out/` from `chrome://extensions`, then use `Reload` after each rebuild
 
 ## Coding Style and Naming
@@ -25,11 +27,12 @@ Use 2-space indentation in JSON and TypeScript. Keep the output compatible with 
 - Write defensive selectors because ChatGPT and Gemini DOM structures change often
 
 ## Testing Guidelines
-Run `npm run test:e2e` for automated regression checks. Also do manual verification on the supported services and confirm:
+Run `npm run test:e2e` for stable automated regression checks. Use `npm run test:e2e:live` when you need live DOM coverage against ChatGPT and Gemini. Also do manual verification on the supported services and confirm:
 
 - `Enter` inserts a newline
 - `Cmd+Enter` / `Ctrl+Enter` sends
 - send button detection still works after response completion
+- live E2E should fail if the expected composer or send button is missing on the real site
 - `claude.ai` is currently unsupported and should be treated as out of scope
 
 ## Commit and PR Guidelines

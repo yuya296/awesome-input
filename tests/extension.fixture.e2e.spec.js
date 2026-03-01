@@ -1,10 +1,5 @@
-const fs = require("node:fs/promises");
-const os = require("node:os");
-const path = require("node:path");
-const { test, expect, chromium } = require("@playwright/test");
-
-const EXTENSION_PATH = path.resolve(__dirname, "..", "out");
-const SEND_SHORTCUT = process.platform === "darwin" ? "Meta+Enter" : "Control+Enter";
+const { test, expect } = require("@playwright/test");
+const { SEND_SHORTCUT, launchExtensionContext } = require("./helpers/extension-context");
 
 function buildChatFixture({ serviceName, editorClass, sendButtonAttrs }) {
   return `<!doctype html>
@@ -48,29 +43,6 @@ function buildChatFixture({ serviceName, editorClass, sendButtonAttrs }) {
 </html>`;
 }
 
-async function launchExtensionContext() {
-  const userDataDir = await fs.mkdtemp(path.join(os.tmpdir(), "awesome-input-e2e-"));
-  const context = await chromium.launchPersistentContext(userDataDir, {
-    headless: false,
-    env: {
-      ...process.env,
-      HOME: userDataDir,
-    },
-    args: [
-      `--disable-extensions-except=${EXTENSION_PATH}`,
-      `--load-extension=${EXTENSION_PATH}`,
-    ],
-  });
-
-  return {
-    context,
-    async cleanup() {
-      await context.close();
-      await fs.rm(userDataDir, { recursive: true, force: true });
-    },
-  };
-}
-
 async function openFixturePage(context, url, html) {
   await context.route(url, async (route) => {
     await route.fulfill({
@@ -104,7 +76,7 @@ test.skip(
   "Extension E2E requires a display server (use xvfb-run in CI).",
 );
 
-test.describe("Awesome Input extension", () => {
+test.describe("Awesome Input extension fixtures", () => {
   test("ChatGPT fixture: Enter inserts a newline and send shortcut sends", async () => {
     const { context, cleanup } = await launchExtensionContext();
 

@@ -14,7 +14,9 @@
 
 - `npm install`: 開発依存をインストール
 - `npm run build`: TypeScript をコンパイルして `out/` に展開
-- `npm run test:e2e`: 再ビルドして Playwright E2E を実行
+- `npm run test:e2e`: 再ビルドして fixture Playwright E2E を実行
+- `npm run test:e2e:live`: 再ビルドして実サイト smoke Playwright E2E を実行
+- `npm run test:e2e:all`: fixture と live の両方を実行
 - `chrome://extensions` で `out/` を読み込み、ビルド後は `Reload` で反映
 
 ## コーディング規約と命名
@@ -25,11 +27,12 @@ JSON と TypeScript は 2 スペースインデントを使います。プロジ
 - ChatGPT と Gemini の DOM 変更に備えて防御的なセレクタを書く
 
 ## テスト方針
-自動回帰は `npm run test:e2e` を使います。加えて、対応サービス上で次を手動確認してください。
+安定した自動回帰は `npm run test:e2e` を使います。ChatGPT / Gemini の実 DOM を確認したいときは `npm run test:e2e:live` を使います。加えて、対応サービス上で次を手動確認してください。
 
 - `Enter` で改行
 - `Cmd+Enter` / `Ctrl+Enter` で送信
 - 応答完了後も送信ボタン検出が壊れていないこと
+- live E2E では実サイト上で composer や send button が見つからなければ失敗として扱ってください
 - `claude.ai` は現在サポート対象外として扱ってください
 
 ## コミット・PR ガイド
