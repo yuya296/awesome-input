@@ -23,7 +23,7 @@ namespace AwesomeInput {
      * site adapters fail to match. Returning `false` here prevents the base
      * adapter from being treated as a first-class supported site.
      */
-    matches(): boolean {
+    matches(_hostname: string): boolean {
       return false;
     },
     /**
